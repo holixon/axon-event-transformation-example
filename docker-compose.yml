@@ -1,0 +1,13 @@
+version: "3.5"
+
+services:
+  axonserver:
+    image: axoniq/axonserver:2023.2.1-jdk-11
+    container_name: eventstore-transformations-axonserver
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    volumes:
+      - .docker/config:/axonserver/config:ro
+      - .docker/data:/axonserver/data
+      - .docker/events:/axonserver/events

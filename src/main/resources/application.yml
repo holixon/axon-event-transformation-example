@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: axon-event-transformation-example
+
+axon:
+  serializer:
+    events: jackson
+    general: jackson
+    messages: jackson
+
+springdoc:
+  enable-kotlin: true
+  swagger-ui:
+    try-it-out-enabled: true

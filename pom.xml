@@ -9,12 +9,12 @@
     <relativePath/>
   </parent>
 
-  <groupId>BASE_GROUP_ID</groupId>
-  <artifactId>BASE_ARTIFACT_ID</artifactId>
+  <groupId>io.holixon.example.axon-event-transformation</groupId>
+  <artifactId>axon-event-transformation-example</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <description>BASE_DESCRIPTION</description>
-  <url>https://github.com/GITHUB_ORGANIZATION/GITHUB_REPOSITORY/</url>
+  <description>axon-event-transformation-example</description>
+  <url>https://github.com/holixon/axon-event-transformation-example/</url>
 
   <properties>
     <!-- TEST -->
@@ -22,11 +22,30 @@
     <assertj.version>3.24.2</assertj.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>3.1.2</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-bom</artifactId>
+        <version>4.9.1</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- KOTLIN -->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <artifactId>kotlin-stdlib</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
@@ -36,6 +55,23 @@
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
       <version>${kotlin-logging.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
 
     <!-- TEST -->
@@ -71,6 +107,25 @@
   <build>
     <defaultGoal>clean jacoco:prepare-agent package</defaultGoal>
 
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <!-- kotlin compiler -->
+          <artifactId>kotlin-maven-plugin</artifactId>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <version>${kotlin.version}</version>
+          <configuration>
+            <jvmTarget>17</jvmTarget>
+            <compilerPlugins>
+              <plugin>spring</plugin>
+              <plugin>no-arg</plugin>
+              <plugin>all-open</plugin>
+            </compilerPlugins>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -79,10 +134,6 @@
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -99,34 +150,13 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</connection>
-    <url>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</url>
-    <developerConnection>scm:git:git@github.com:GITHUB_ORGANIZATION/GITHUB_REPOSITORY.git</developerConnection>
+    <connection>scm:git:git@github.com:holixon/axon-event-transformation-example.git</connection>
+    <url>scm:git:git@github.com:holixon/axon-event-transformation-example.git</url>
+    <developerConnection>scm:git:git@github.com:holixon/axon-event-transformation-example.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
   <developers>
-    <developer>
-      <id>jangalinski</id>
-      <name>Jan Galinski</name>
-      <roles>
-        <role>Product Owner</role>
-        <role>Developer</role>
-      </roles>
-      <organization>Holisticon AG</organization>
-      <organizationUrl>https://holisticon.de</organizationUrl>
-    </developer>
     <developer>
       <id>zambrovski</id>
       <name>Simon Zambrovski</name>
