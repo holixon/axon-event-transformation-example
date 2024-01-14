@@ -1,5 +1,6 @@
-package io.holixon.example.axon.event.transformation.adapter.`in`
+package io.holixon.example.axon.event.transformation.application.usecase
 
+import io.holixon.example.axon.event.transformation.application.port.`in`.GenerateRandomBatchUpdateInPort
 import io.holixon.example.axon.event.transformation.application.port.`in`.Measurement
 import io.holixon.example.axon.event.transformation.application.port.`in`.SensorMeasurements
 import io.holixon.example.axon.event.transformation.application.port.`in`.UpdateMeasurementInPort
@@ -8,11 +9,11 @@ import java.time.LocalDate
 import kotlin.random.Random
 
 @Component
-class BatchUpdater(
+class GenerateRandomBatchUpdateUseCase(
   val updateMeasurementInPort: UpdateMeasurementInPort
-) {
+) : GenerateRandomBatchUpdateInPort {
 
-  fun runBatchUpdate(sensorId: String = "temp1") {
+  override fun runBatchUpdate(sensorId: String) {
     (0L..365L).forEach { offset ->
       val updateDate = LocalDate.now().plusDays(offset)
       generateForecast(sensorId, updateDate)
@@ -24,12 +25,9 @@ class BatchUpdater(
       SensorMeasurements(
         sensorId = sensorId,
         values = (0L..365L).associate { forecastOffset ->
-          updateDate.plusDays(forecastOffset) to Measurement(randomFloat(), "°C")
+          updateDate.plusDays(forecastOffset) to Measurement(Random.nextFloat() * 30, "°C")
         }
       )
     )
-
   }
-
-  private fun randomFloat(): Float = Random.nextFloat() * 30
 }

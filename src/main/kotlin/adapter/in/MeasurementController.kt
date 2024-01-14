@@ -1,9 +1,6 @@
 package io.holixon.example.axon.event.transformation.adapter.`in`
 
-import io.holixon.example.axon.event.transformation.application.port.`in`.Measurement
-import io.holixon.example.axon.event.transformation.application.port.`in`.RetrieveMeasurementsInPort
-import io.holixon.example.axon.event.transformation.application.port.`in`.SensorMeasurements
-import io.holixon.example.axon.event.transformation.application.port.`in`.UpdateMeasurementInPort
+import io.holixon.example.axon.event.transformation.application.port.`in`.*
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
@@ -18,7 +15,7 @@ import java.time.ZoneOffset
 class MeasurementController(
   val updateMeasurementInPort: UpdateMeasurementInPort,
   val retrieveMeasurementsInPort: RetrieveMeasurementsInPort,
-  val batchUpdater: BatchUpdater
+  val generateRandomBatchUpdateInPort: GenerateRandomBatchUpdateInPort
 ) {
 
   @GetMapping(value = ["/sensor/{sensorId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -59,7 +56,7 @@ class MeasurementController(
 
   @PostMapping(value = ["/batch"])
   fun batchUpdate(): ResponseEntity<Void> {
-    batchUpdater.runBatchUpdate()
+    generateRandomBatchUpdateInPort.runBatchUpdate()
     return noContent().build()
   }
 }
