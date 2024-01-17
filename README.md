@@ -5,7 +5,7 @@
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.holixon.example.axon-event-transformation/axon-event-transformation-example/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.holixon.example.axon-event-transformation/axon-event-transformation-example)
 
-## Into
+## Motivation
 
 The example demonstrates the usage of the [event store transformation API](https://docs.axoniq.io/reference-guide/axon-server/administration/event-transformation) and focuses on deletion of "stale" events.
 
@@ -15,12 +15,12 @@ Consider a system storing temperature forecast delivered by some external system
 Apart from the historical information (which can be for example used to tune the forecast model), the system holds current (= latest) forecast and can be queried for the 
 weather on a certain date. After the delivery of the new forecast, the previous forecast is considered as "stale" and doesn't need to be stored.
 
-## The API
+## System API (RESTful)
 
 The system allows to insert a new temperature value at a single date and query temperature on certain date. For *simulation purposes* the system provides a fake endpoint
 for generation of an entire forecast for the next year (taking random values for the temperature).
 
-## The mission
+## Mission
 
 Try to use event store transformation API to delete stale events and reduce the size of the event store - both for purposes of disk usage and the amount of events used on replays.
 
@@ -62,9 +62,9 @@ Try to use event store transformation API to delete stale events and reduce the 
   }
 }
 ```
-- A single JSON payload consumes 16415 bytes in total (netto).
-- Based on file names of event files (00000000000000000175.events, 00000000000000000233.events) 58 update events match into a 977kb file resulting in 16845 bytes (brutto).
-- 356 event consume 16845 * 365 = 6148425 brutto (splitting), resulting in not quite full 7 segments per batch run.
+- A single JSON payload consumes 16415 bytes in total (net).
+- Based on file names of event files (`00000000000000000175.events`, `00000000000000000233.events`) 58 update events match into a 977kb file resulting in 16845 bytes (with metadata).
+- 356 event consume 16845 * 365 = 6148425 bytes, resulting in not quite full seven segments per batch run.
 
 ### Empty event store 
 
