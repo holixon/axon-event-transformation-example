@@ -7,7 +7,7 @@
 
 ## Into
 
-The example demonstrates the usage of the event store transformation API and focuses on deletion of "stale" events.
+The example demonstrates the usage of the [event store transformation API](https://docs.axoniq.io/reference-guide/axon-server/administration/event-transformation) and focuses on deletion of "stale" events.
 
 ## Use case
 
@@ -42,6 +42,7 @@ Try to use event store transformation API to delete stale events and reduce the 
 - The size of the index file seems to be 2097152 bytes (approx 2mb) for event segment files of default size (256mb) and for a drastically reduced event segment size of 977k.
 - The size of global-index-00000.xref is 64mb.
 - Events use Jackson serializer storing payload as JSON.
+- One event contains a forecast for the next year (a map keyed with date and valued with measurement)
 - Event payload is then represented like this:
 
 ```json
@@ -63,15 +64,17 @@ Try to use event store transformation API to delete stale events and reduce the 
 ```
 - A single JSON payload consumes 16415 bytes in total (netto).
 - Based on file names of event files (00000000000000000175.events, 00000000000000000233.events) 58 update events match into a 977kb file resulting in 16845 bytes (brutto).
-
-356 event consume 16845 * 365 = 6148425 brutto (splitting), resulting in not quite full 7 segments per batch run.
+- 356 event consume 16845 * 365 = 6148425 brutto (splitting), resulting in not quite full 7 segments per batch run.
 
 ### Empty event store 
 
+```
 977K Jan 17 22:40 00000000000000000000.events
+```
 
 ### First batch run (1 create sensor event + 365 update events)
 
+```
 977K Jan 17 22:44 00000000000000000000.events
 977K Jan 17 22:45 00000000000000000059.events
 977K Jan 17 22:45 00000000000000000117.events
@@ -79,9 +82,11 @@ Try to use event store transformation API to delete stale events and reduce the 
 977K Jan 17 22:45 00000000000000000233.events
 977K Jan 17 22:45 00000000000000000291.events
 977K Jan 17 22:45 00000000000000000349.events
+```
 
 ### Second batch run (further 365 update events starting from "2024-01-17T21:48:22.384553762Z")
 
+```
 977K Jan 17 22:44 00000000000000000000.events
 977K Jan 17 22:45 00000000000000000059.events
 977K Jan 17 22:45 00000000000000000117.events
@@ -95,9 +100,11 @@ Try to use event store transformation API to delete stale events and reduce the 
 977K Jan 17 22:48 00000000000000000581.events
 977K Jan 17 22:48 00000000000000000639.events
 977K Jan 17 22:48 00000000000000000697.events
+```
 
 ### Cleanup (delete all update events created before "2024-01-17T21:48:22.384553762Z")
 
+```
 3,9K Jan 17 22:50 00000000000000000000_00003.events
 977K Jan 17 22:44 00000000000000000000.events
 3,6K Jan 17 22:50 00000000000000000059_00003.events
@@ -118,9 +125,11 @@ Try to use event store transformation API to delete stale events and reduce the 
 977K Jan 17 22:48 00000000000000000581.events
 977K Jan 17 22:48 00000000000000000639.events
 977K Jan 17 22:48 00000000000000000697.events
+```
 
 ### Compacting
 
+```
 3,9K Jan 17 22:50 00000000000000000000_00003.events
 3,6K Jan 17 22:50 00000000000000000059_00003.events
 3,6K Jan 17 22:50 00000000000000000117_00003.events
@@ -134,6 +143,7 @@ Try to use event store transformation API to delete stale events and reduce the 
 977K Jan 17 22:48 00000000000000000581.events
 977K Jan 17 22:48 00000000000000000639.events
 977K Jan 17 22:48 00000000000000000697.events
+```
 
 ## How to run
 
