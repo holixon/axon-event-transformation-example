@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
+import java.time.Instant
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -55,8 +56,15 @@ class MeasurementController(
   }
 
   @PostMapping(value = ["/batch"])
-  fun batchUpdate(): ResponseEntity<Void> {
+  fun batchUpdate(): ResponseEntity<ExecutionTimeDto> {
+    val before = Instant.now()
     generateRandomBatchUpdateInPort.runBatchUpdate()
-    return noContent().build()
+    val after = Instant.now()
+    return ok(ExecutionTimeDto(start = before, end = after))
   }
+
+  data class ExecutionTimeDto(
+    val start: Instant,
+    val end: Instant
+  )
 }

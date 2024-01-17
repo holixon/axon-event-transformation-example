@@ -2,11 +2,12 @@ axoniq:
   axonserver:
     name: eventstore-transformations-local
     hostname: localhost
-    #standalone: true
-    autocluster:
-      first:
-      contexts: default
+    standalone: true
     accesscontrol:
       enabled: false
     devmode:
       enabled: true
+    event:
+      segment-size: 1000000 # 1mb
+    snapshot:
+      segment-size: 1000000 # 1mb

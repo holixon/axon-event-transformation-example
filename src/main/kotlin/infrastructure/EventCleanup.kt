@@ -1,8 +1,11 @@
 package io.holixon.example.axon.event.transformation.infrastructure
 
 import io.axoniq.axonserver.connector.AxonServerConnection
+import io.axoniq.axonserver.connector.event.transformation.Appender
 import io.axoniq.axonserver.connector.event.transformation.EventTransformation
 import io.axoniq.axonserver.connector.event.transformation.event.EventSources
+import io.axoniq.axonserver.connector.event.transformation.event.EventTransformer
+import io.axoniq.axonserver.grpc.event.EventWithToken
 import mu.KLogging
 import org.axonframework.axonserver.connector.AxonServerConfiguration
 import org.springframework.stereotype.Component
@@ -36,7 +39,9 @@ class EventCleanup(
               logger.debug { "Event: ${eventWithToken.event.payload.type}" }
               eventWithToken.event.payload.type == eventFQDN && eventWithToken.event.timestamp < deleteUntil.toEpochMilli()
             }
-            .transform("Deleting events until $deleteUntil") { event, appender -> appender.deleteEvent(event.token) }
+            .transform("Deleting events until $deleteUntil") { event, appender ->
+              appender.deleteEvent(event.token)
+            }
             .execute { connection.eventTransformationChannel() }
             .get()
         } catch (e: Exception) {
