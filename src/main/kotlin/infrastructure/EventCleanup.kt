@@ -22,6 +22,7 @@ class EventCleanup(
   companion object : KLogging()
 
   fun deleteEventsUntil(eventFQDN: String, deleteUntil: Instant, firstToken: Long = 0, lastToken: Long = -1L) {
+    logger.info { "Deleting all events of type $eventFQDN older than $deleteUntil..." }
     AutoClosableAxonServerConnection
       .connect(connect.hostName, connect.grpcPort, this.javaClass.simpleName, this.context).use { connection ->
 
@@ -50,9 +51,11 @@ class EventCleanup(
           connection.ensureNoActiveTransformations()
         }
       }
+    logger.info { "Deleting complete." }
   }
 
   fun compact() {
+    logger.info { "Compacting event store..." }
     AutoClosableAxonServerConnection
       .connect(connect.hostName, connect.grpcPort, this.javaClass.simpleName, this.context).use { connection ->
         connection.ensureNoActiveTransformations()
@@ -61,6 +64,7 @@ class EventCleanup(
           .startCompacting()
           .get()
       }
+    logger.info { "Compacting complete." }
   }
 
   fun AxonServerConnection.ensureNoActiveTransformations() {
