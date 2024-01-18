@@ -1,9 +1,8 @@
 # Axon Event Transformation Example
 
-[![incubating](https://img.shields.io/badge/lifecycle-INCUBATING-orange.svg)](https://github.com/holisticon#open-source-lifecycle)
+[![example](https://img.shields.io/badge/lifecycle-EXAMPLE-blue.svg)](https://github.com/holisticon#open-source-lifecycle)
 [![Build Status](https://github.com/holixon/axon-event-transformation-example/workflows/Development%20branches/badge.svg)](https://github.com/holixon/axon-event-transformation-example/actions)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.holixon.example.axon-event-transformation/axon-event-transformation-example/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.holixon.example.axon-event-transformation/axon-event-transformation-example)
 
 ## Motivation
 
