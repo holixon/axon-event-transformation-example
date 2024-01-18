@@ -27,8 +27,8 @@ Try to use event store transformation API to delete stale events and reduce the 
 ## Experiment
 
 - A sensor is created (1 event)
-- The first batch of 365 updates (starting from today for the next year) for 365 days from update date to the future is sent
-- The second batch of 365 updates (starting from today for the next year) for 365 days from update date to the future is sent
+- The first batch of 365 events (starting from today for the next year) for 365 days from update date to the future is sent
+- The second batch of 365 events (starting from today for the next year) for 365 days from update date to the future is sent
 - All 365 events from the first batch are deleted 
 
 ### Preparation
@@ -39,7 +39,7 @@ Try to use event store transformation API to delete stale events and reduce the 
 
 - We consider only event storage (no snapshot files, no nindex files, no global-index-00000.xref)
 - The size of the snapshot file can be set-up via property separately.
-- The size of the index file seems to be 2097152 bytes (approx 2mb) for event segment files of default size (256mb) and for a drastically reduced event segment size of 977k.
+- The size of the index file seems to be 2097152 bytes (approx 2mb) for event segment files of default size of 256mb and for a drastically reduced event segment size of 977kb.
 - The size of global-index-00000.xref is 64mb.
 - Events use Jackson serializer storing payload as JSON.
 - One event contains a forecast for the next year (a map keyed with date and valued with measurement)
@@ -63,8 +63,8 @@ Try to use event store transformation API to delete stale events and reduce the 
 }
 ```
 - A single JSON payload consumes 16415 bytes in total (net).
-- Based on file names of event files (`00000000000000000175.events`, `00000000000000000233.events`) 58 update events match into a 977kb file resulting in 16845 bytes (with metadata).
-- 356 event consume 16845 * 365 = 6148425 bytes, resulting in not quite full seven segments per batch run.
+- Based on file names of event files (`00000000000000000175.events`, `00000000000000000233.events`) 58 update events match into a 977kb file resulting in 16845 bytes per event (with metadata).
+- A batch of 365 events consumes 16845 bytes * 365 = 6148425 bytes, resulting in not quite full seven segments per batch run.
 
 ### Empty event store 
 
@@ -72,7 +72,7 @@ Try to use event store transformation API to delete stale events and reduce the 
 977K Jan 17 22:40 00000000000000000000.events
 ```
 
-### First batch run (1 create sensor event + 365 update events)
+### First batch run (1 sensor created event + 365 update events)
 
 ```
 977K Jan 17 22:44 00000000000000000000.events
